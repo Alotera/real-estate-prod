@@ -203,6 +203,7 @@ export const createProperty = async (
       country,
       postalCode,
       managerCognitoId,
+      region, // ✅ Tambahkan region di sini
       ...propertyData
     } = req.body;
 
@@ -236,7 +237,7 @@ export const createProperty = async (
     ).toString()}`;
     const geocodingResponse = await axios.get(geocodingUrl, {
       headers: {
-        "User-Agent": "RealEstateApp (justsomedummyemail@gmail.com",
+        "User-Agent": "RealEstateApp (justsomedummyemail@gmail.com)",
       },
     });
     const [longitude, latitude] =
@@ -247,17 +248,16 @@ export const createProperty = async (
           ]
         : [0, 0];
 
-    // create location
     const [location] = await prisma.$queryRaw<Location[]>`
       INSERT INTO "Location" (address, city, state, country, "postalCode", coordinates)
       VALUES (${address}, ${city}, ${state}, ${country}, ${postalCode}, ST_SetSRID(ST_MakePoint(${longitude}, ${latitude}), 4326))
       RETURNING id, address, city, state, country, "postalCode", ST_AsText(coordinates) as coordinates;
     `;
 
-    // create property
     const newProperty = await prisma.property.create({
       data: {
         ...propertyData,
+        region, // ✅ Sertakan region di sini
         photoUrls,
         locationId: location.id,
         managerCognitoId,
@@ -291,3 +291,4 @@ export const createProperty = async (
       .json({ message: `Error creating property: ${err.message}` });
   }
 };
+
