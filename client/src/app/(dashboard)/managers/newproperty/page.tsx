@@ -35,6 +35,7 @@ const NewProperty = () => {
       city: "",
       state: "",
       country: "",
+      region: "",
       postalCode: "",
     },
   });
@@ -219,6 +220,11 @@ const NewProperty = () => {
                 <CustomFormField
                   name="postalCode"
                   label="Postal Code"
+                  className="w-full"
+                />
+                <CustomFormField
+                  name="region"
+                  label="Region"
                   className="w-full"
                 />
               </div>

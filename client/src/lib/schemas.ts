@@ -22,6 +22,7 @@ export const propertySchema = z.object({
   city: z.string().min(1, "City is required"),
   state: z.string().min(1, "State is required"),
   country: z.string().min(1, "Country is required"),
+  region: z.string().min(1, "Country is required"),
   postalCode: z.string().min(1, "Postal code is required"),
 });
 
